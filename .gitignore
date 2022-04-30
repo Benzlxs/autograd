@@ -7,3 +7,4 @@ work_dir
 *.log
 *.pyrc
 *.pyc
+*__pycache__

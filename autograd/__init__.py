@@ -1,3 +1,3 @@
-from .nodes import Node, exp, log, sin, cos
+from .nodes import node, exp, log, sin, cos
 
 

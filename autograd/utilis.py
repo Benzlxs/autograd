@@ -40,8 +40,8 @@ def topological_sort(vertices, edges):
 def generate_graph(vertex, vertices, edges):
     if vertex not in vertices:
         vertices.append(vertex)
-        if vertex.compute_graph is not None:
-            edges.update({vertex: vertex.compute_graph.vertices})
+        if vertex.grad_ops is not None:
+            edges.update({vertex: vertex.grad_ops.vertices})
         else:
             edges.update({vertex: []})
         for v in edges[vertex]:
