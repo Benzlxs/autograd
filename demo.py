@@ -4,7 +4,7 @@ def equation(x):
     return gd.exp(3*x + 3 - x**5)
 
 def equation_2(x, y):
-    return x**4 + x*y + 4*y
+    return x**4 + x*y + 4*y - gd.cos(y)**2 - gd.sin(x)*gd.log(y)
 
 if __name__=="__main__":
     # define node
