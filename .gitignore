@@ -1,0 +1,9 @@
+# C extensions
+*.so
+data
+build/
+work_dir
+*.egg
+*.log
+*.pyrc
+*.pyc
