@@ -24,7 +24,7 @@ class node(object):
             other = node(other)
         return node(
             self.value + other.value,
-            grad_ops = add_grad(self, other)
+            grad_ops = addition_grad(self, other)
         )
 
     def __radd__(self, other):
