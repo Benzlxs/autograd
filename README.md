@@ -39,7 +39,36 @@ We cannot calucated the gradient of a multiply-referenced value until we have tr
 
 
 ## Gradient functions
+After having backward computation graph, we can use the chain rule in differentiation to get the derivative of each variable to the final function value. The component in the chain rule is the graident of each arithmetic operator, and it should be defined maunally according to its differential equation. All gradient equations are defined in the file `autograd/operations_grad.py`. Here are some examples.
 
+```bash
+class multiplication_grad:
+    # func: z = x * y
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.vertices = [x, y]
+    def backward(self, z_grad):
+        self.x.grad += self.y.value * z_grad
+        self.y.grad += self.x.value * z_grad
+        
+class log_grad:
+    # func: z = log(y)
+    def __init__(self, y): 
+        self.y = y 
+        self.vertices = [y] 
+    def backward(self, z_grad):
+        self.y.grad += z_grad / self.y.value
 
+class sin_grad:
+    # func: z = sin(y)
+    def __init__(self, y): 
+        self.y = y 
+        self.vertices = [y] 
+    def backward(self, z_grad):
+        self.y.grad += z_grad * np.cos(self.y.value)
+```
+
+Currently, I just support addition, substraction, multiplication, division, log, exponentiation, cos, and sin, but other arithmetic operators can be appended easily to this demo project. 
 
 ## How to use
