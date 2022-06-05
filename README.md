@@ -18,10 +18,28 @@ class node(object):
     def __rpow__(self, other):
     def __truediv__(self, other):
 ```
+## Computation graph construction
+We cannot calucated the gradient of a multiply-referenced value until we have traversed all of the paths that lead up to it. Therefore, we need to do a topological sorting of the computation graph, and get an ordering of nodes with child nodes always appearing before their parents. When evaluting the node value, the forward computation traversal graph has been constructed with the opposite ordering constraint: parents before children. In this demo project, I can generate the backward computation graph by simply reversing the forward computation graph, and backward computation graph satisfies the constraint: children before parents.
+
+```bash
+    def backward(self):
+        vertices = []
+        edges = {}
+        
+        generate_graph(self, vertices, edges)
+        # Sort The Graph
+        sorted_vertices = topological_sort(vertices, edges)
+
+        # Run backward on the graph
+        sorted_vertices[0].grad = 1.0
+        for vertex in sorted_vertices:
+            if vertex.grad_ops is not None:
+                vertex.grad_ops.backward(vertex.grad)
+```
 
 
 ## Gradient functions
 
-## Computation graph construction
+
 
 ## How to use
