@@ -72,3 +72,13 @@ class sin_grad:
 Currently, I just support addition, substraction, multiplication, division, log, exponentiation, cos, and sin, but other arithmetic operators can be appended easily to this demo project. 
 
 ## How to use
+The `demo.py` is the example of using autograd. The `gd` node should be firstly created, so that we can trace each functions applied to this node, then evalute the function value given input nodes. Finally the node.backward() is called to generate backforward computation graph and use chain rule to calculate the derivative of each node.
+```bash
+    x = gd.node(2.)
+    y = gd.node(3.)
+    f = equation_2(x, y)
+    f.backward()
+    print("Graident of x:", x.grad)
+    print("Graident of y:", y.grad)
+```
+
