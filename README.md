@@ -4,6 +4,21 @@ A toy code to demonstrate how autograd works! It includes all necessary componen
 ## Wrapping functions
 The autograd is to transform computation equation into gradient function, and we should have access to each operation in the computation equation. In this demo project, I chose to trace each function when it is being executed, and build computation graph on the fly. To do this, I need to wrap each original function with my function. The node with wrapped function takes care of the necessary book-keeping, recording the name of the function, the arguments, and the return value. To wrap the function, I define the basic element in autograd as node, (`autograd/nodes.py`).
 
+```
+!\bin\bash
+class node(object):
+    def __init__(self, value: float, grad_ops=None):
+        self.value = value
+        self.grad = 0.0 
+        self.grad_ops = grad_ops
+    def __add__(self, other):
+    def __radd__(self, other):
+    def __mul__(self, other):
+    def __rmul__(self, other):
+    def __sub__(self, other):
+    def __rpow__(self, other):
+    def __truediv__(self, other):
+```
 
 
 ## Gradient functions
