@@ -3,77 +3,91 @@ import numpy as np
 ## gradient function of basic operations
 
 class addition_grad:
-    def __init__(self, parent_node, child_node):
-        self.parent_node = parent_node
-        self.child_node = child_node
-        self.vertices = [parent_node, child_node]
-    def backward(self, parent_grad):
-        self.parent_node.grad += parent_grad
-        self.child_node.grad += parent_grad
+    """
+        func: z = x + y
+        grad_z = dF/dz, 
+        x.grad: dF/dx = dF/dz * dz/dx
+        y.grad: dF/dy = dF/dz * dz/dy
+    """
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.vertices = [x, y]
+    def backward(self, z_grad):
+        self.x.grad += z_grad
+        self.y.grad += z_grad
 
 class substraction_grad:
-    def __init__(self, parent_node, child_node):
-        self.parent_node = parent_node
-        self.child_node = child_node
-        self.vertices = [parent_node, child_node]
-    def backward(self, parent_grad):
-        self.parent_node.grad += parent_grad
-        self.child_node.grad += -1 * parent_grad
+    # func: z = x - y
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.vertices = [x, y]
+    def backward(self, z_grad):
+        self.x.grad += z_grad
+        self.y.grad += -1 * z_grad
 
 class multiplication_grad:
-    def __init__(self, parent_node, child_node):
-        self.parent_node = parent_node
-        self.child_node = child_node
-        self.vertices = [parent_node, child_node]
-    def backward(self, parent_grad):
-        self.parent_node.grad += self.child_node.value * parent_grad
-        self.child_node.grad += self.parent_node.value * parent_grad
+    # func: z = x * y
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.vertices = [x, y]
+    def backward(self, z_grad):
+        self.x.grad += self.y.value * z_grad
+        self.y.grad += self.x.value * z_grad
 
 class division_grad:
-    def __init__(self, perent_node, child_node):
-        self.perent_node = perent_node
-        self.child_node = child_node
-        self.vertices = [perent_node, child_node]
-    def backward(self, parent_grad):
-        self.perent_node.grad += parent_grad / self.child_node.value
-        self.child_node.grad += -1 * parent_grad * self.perent_node / (self.child_node * self.child_node)
+    # func: z = x/y
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.vertices = [x, y]
+    def backward(self, z_grad):
+        self.x.grad += z_grad / self.y.value
+        self.y.grad += -1 * z_grad * self.x.value / (self.y.value * self.y.value)
 
 class power_grad:
-    def __init__(self, parent_node, child_node):
-        self.parent_node = parent_node
-        self.child_node = child_node
-        self.vertices = [parent_node, child_node]
-    def backward(self, parent_grad):
-        self.parent_node.grad += parent_grad * self.child_node.value * self.parent_node.value **\
-                                        np.where(self.child_node.value, self.child_node.value - 1, 1.)
-        self.child_node.grad += parent_grad * np.log(self.child_node.value) * self.parent_node.value **\
-                                        self.child_node.value
+    # func: z = x**y
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.vertices = [x, y]
+    def backward(self, z_grad):
+        self.x.grad += z_grad * self.y.value * self.x.value **\
+                                        np.where(self.y.value, self.y.value - 1, 1.)
+        self.y.grad += z_grad * np.log(self.y.value) * self.x.value **\
+                                        self.y.value
 
 class exp_grad:
-    def __init__(self, child_node):
-        self.child_node = child_node
-        self.vertices = [child_node]
-    def backward(self, parent_grad):
-        self.child_node.grad += parent_grad * np.exp(self.child_node.value)
+    # func: z = e**y
+    def __init__(self, y):
+        self.y = y
+        self.vertices = [y]
+    def backward(self, z_grad):
+        self.y.grad += z_grad * np.exp(self.y.value)
 
 class log_grad:
-    def __init__(self, child_node):
-        self.child_node = child_node
-        self.vertices = [child_node]
-    def backward(self, parent_grad):
-        self.child_node.grad += parent_grad / self.child_node.value
+    # func: z = log(y)
+    def __init__(self, y):
+        self.y = y
+        self.vertices = [y]
+    def backward(self, z_grad):
+        self.y.grad += z_grad / self.y.value
 
 class sin_grad:
-    def __init__(self, child_node): 
-        self.child_node = child_node
-        self.vertices = [child_node]
-    def backward(self, parent_grad):
-        self.child_node.grad += parent_grad * np.cos(self.child_node.value)
+    # func: z = sin(y)
+    def __init__(self, y): 
+        self.y = y
+        self.vertices = [y]
+    def backward(self, z_grad):
+        self.y.grad += z_grad * np.cos(self.y.value)
 
 class cos_grad:
-    def __init__(self, child_node):
-        self.child_node = child_node
-        self.vertices = [child_node]
-    def backward(self, parent_grad):
-        self.child_node.grad += -1 * parent_grad * np.sin(self.child_node.value)
+    # func: z = cos(y)
+    def __init__(self, y):
+        self.y = y
+        self.vertices = [y]
+    def backward(self, z_grad):
+        self.y.grad += -1 * z_grad * np.sin(self.y.value)
 
